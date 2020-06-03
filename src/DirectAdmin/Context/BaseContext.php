@@ -11,6 +11,7 @@
 namespace Omines\DirectAdmin\Context;
 
 use Omines\DirectAdmin\DirectAdmin;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Encapsulates a contextual connection to a DirectAdmin server.
@@ -70,9 +71,11 @@ abstract class BaseContext
      * @param $method
      * @param $uri
      * @param $options
+     * @param bool $returnRawResponse
+     * @return array|ResponseInterface
      */
-    public function rawRequest($method, $uri, $options)
+    public function rawRequest($method, $uri, $options, bool $returnRawResponse = false)
     {
-        return $this->connection->rawRequest($method, $uri, ['form_params' => $options]);
+        return $this->connection->rawRequest($method, $uri, $options, $returnRawResponse);
     }
 }

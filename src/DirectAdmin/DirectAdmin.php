@@ -16,6 +16,7 @@ use Omines\DirectAdmin\Context\AdminContext;
 use Omines\DirectAdmin\Context\ResellerContext;
 use Omines\DirectAdmin\Context\UserContext;
 use Omines\DirectAdmin\Utility\Conversion;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * DirectAdmin API main class, encapsulating a specific account connection to a single server.
@@ -151,12 +152,18 @@ class DirectAdmin
      * @param string $method
      * @param string $uri
      * @param array $options
-     * @return array
+     * @param bool $returnRawResponse
+     * @return array|ResponseInterface
      */
-    public function rawRequest($method, $uri, $options)
+    public function rawRequest($method, $uri, $options, bool $returnRawResponse = false)
     {
         try {
             $response = $this->connection->request($method, $uri, $options);
+
+            if($returnRawResponse){
+                return $response;
+            }
+
             if ($response->getHeader('Content-Type')[0] == 'text/html') {
                 throw new DirectAdminException(sprintf('DirectAdmin API returned text/html to %s %s containing "%s"', $method, $uri, strip_tags($response->getBody()->getContents())));
             }
