@@ -1,5 +1,5 @@
 {
-  "name": "omines/directadmin",
+  "name": "krazzer/directadmin",
   "type": "library",
   "description": "PHP client library to manage DirectAdmin control panel servers.",
   "license": "MIT",
@@ -9,9 +9,9 @@
   "homepage": "https://github.com/omines/directadmin",
   "authors": [
     {
-      "name": "Niels Keurentjes",
-      "email": "niels.keurentjes@omines.com",
-      "homepage": "https://www.omines.nl/"
+      "name": "Kaz van Wel",
+      "email": "info@kiksaus.nl",
+      "homepage": "https://kiksaus.nl/"
     }
   ],
   "support": {
