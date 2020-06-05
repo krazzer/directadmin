@@ -25,9 +25,9 @@ use Psr\Http\Message\ResponseInterface;
  */
 class DirectAdmin
 {
-    const ACCOUNT_TYPE_ADMIN = 'admin';
+    const ACCOUNT_TYPE_ADMIN    = 'admin';
     const ACCOUNT_TYPE_RESELLER = 'reseller';
-    const ACCOUNT_TYPE_USER = 'user';
+    const ACCOUNT_TYPE_USER     = 'user';
 
     /** @var string */
     private $authenticatedUser;
@@ -87,6 +87,14 @@ class DirectAdmin
     }
 
     /**
+     * @return Client
+     */
+    public function getConnection(): Client
+    {
+        return $this->connection;
+    }
+
+    /**
      * Creates a connection wrapper to DirectAdmin as the specified account.
      *
      * @param string $url The base URL of the DirectAdmin server
@@ -96,13 +104,16 @@ class DirectAdmin
     protected function __construct($url, $username, $password)
     {
         $accounts = explode('|', $username);
+
         $this->authenticatedUser = current($accounts);
-        $this->username = end($accounts);
-        $this->password = $password;
-        $this->baseUrl = rtrim($url, '/') . '/';
+        $this->username          = end($accounts);
+        $this->password          = $password;
+        $this->baseUrl           = rtrim($url, '/') . '/';
+
         $this->connection = new Client([
+            'cookies'  => true,
             'base_uri' => $this->baseUrl,
-            'auth' => [$username, $password],
+            'auth'     => [$username, $password],
         ]);
     }
 
@@ -128,7 +139,7 @@ class DirectAdmin
     public function invokeApi($method, $command, $options = [])
     {
         $result = $this->rawRequest($method, '/CMD_API_' . $command, $options);
-        if (!empty($result['error'])) {
+        if ( ! empty($result['error'])) {
             throw new DirectAdminException("$method to $command failed: $result[details] ($result[text])");
         }
         return Conversion::sanitizeArray($result);
@@ -160,7 +171,7 @@ class DirectAdmin
         try {
             $response = $this->connection->request($method, $uri, $options);
 
-            if($returnRawResponse){
+            if ($returnRawResponse) {
                 return $response;
             }
 

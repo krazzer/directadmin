@@ -38,7 +38,7 @@ abstract class BaseContext
      *
      * @return DirectAdmin
      */
-    protected function getConnection()
+    public function getConnection()
     {
         return $this->connection;
     }
